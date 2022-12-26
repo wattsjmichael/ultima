@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    public static PlayerController instance;
     public float moveSpeed;
 
     public Rigidbody2D rb;
@@ -15,6 +17,12 @@ public class PlayerController : MonoBehaviour
     public Sprite[] playerDirectionSprites;
 
     public Joystick joystick;
+
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
