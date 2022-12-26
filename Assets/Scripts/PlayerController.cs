@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
 
     private Animator anim;
+    public Animator weaponAnim;
 
     public SpriteRenderer sr;
     public Sprite[] playerDirectionSprites;
@@ -42,10 +43,14 @@ public class PlayerController : MonoBehaviour
                 if (joystick.Horizontal < 0)
                 {
                     sr.flipX = true;
+                    weaponAnim.SetFloat("dirX", -1f);
+                    weaponAnim.SetFloat("dirY", 0f);
                 }
                 else
                 {
                     sr.flipX = false;
+                    weaponAnim.SetFloat("dirX", 1f);
+                    weaponAnim.SetFloat("dirY", 0f);
                 }
             }
             else
@@ -53,12 +58,22 @@ public class PlayerController : MonoBehaviour
                 if (joystick.Vertical < 0)
                 {
                     sr.sprite = playerDirectionSprites[0];
+                    weaponAnim.SetFloat("dirX", 0f);
+                    weaponAnim.SetFloat("dirY", -1f);
                 }
                 else
                 {
                     sr.sprite = playerDirectionSprites[2];
+                    weaponAnim.SetFloat("dirX", 0f);
+                    weaponAnim.SetFloat("dirY", 1f);
                 }
             }
         }
+    }
+
+    public void attackButton()
+    {
+        weaponAnim.SetTrigger("Attack");
+        Debug.Log("Hello");
     }
 }
