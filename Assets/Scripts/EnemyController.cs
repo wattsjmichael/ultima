@@ -23,6 +23,8 @@ public class EnemyController : MonoBehaviour
         rangeToChase,
         waitAfterHitting;
 
+        public int damToDeal = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,14 +60,13 @@ public class EnemyController : MonoBehaviour
                     waitCounter = Random.Range(waitTime * .75f, waitTime * 1.25f);
                     eAnim.SetBool("moving", false);
                 }
-                if (shouldChase)
+                if (shouldChase && PlayerController.instance.gameObject.activeInHierarchy)
                 {
                     if (
                         Vector3.Distance(
                             transform.position,
                             PlayerController.instance.transform.position
-                        ) < rangeToChase
-                    )
+                        ) < rangeToChase)
                     {
                         isChasing = true;
                     }
@@ -92,11 +93,10 @@ public class EnemyController : MonoBehaviour
                 eRB.velocity = moveDir * chaseSpeed;
             }
 
-            if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) > rangeToChase)
+            if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) > rangeToChase || !PlayerController.instance.gameObject.activeInHierarchy)
             {
                 isChasing = false;
                 waitCounter = waitTime;
-
                 eAnim.SetBool("moving", false);
             }
         }
@@ -118,6 +118,8 @@ public class EnemyController : MonoBehaviour
                 eAnim.SetBool("moving", false);
 
                 PlayerController.instance.KnockBack(transform.position);
+
+                PlayerHealthController.instance.DmgPlayer(damToDeal);
             }
         }
     }

@@ -297,6 +297,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1547864421}
     m_Modifications:
+    - target: {fileID: 1623951340135953234, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1623951340278836766, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -344,6 +348,10 @@ PrefabInstance:
     - target: {fileID: 1623951340278836767, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: m_Name
       value: Enemy Blob
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623951340278836767, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1623951340278836833, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: area
@@ -438,6 +446,7 @@ GameObject:
   - component: {fileID: 252972341}
   - component: {fileID: 252972340}
   - component: {fileID: 252972342}
+  - component: {fileID: 252972343}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -540,6 +549,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &252972343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252972337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145fd05630288bb4f9534f6ea79340aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currHealth: 0
+  maxHealth: 50
+  invcLength: 1
+  deathEffect: {fileID: 6435730183740690088, guid: 8828b35c0e16ec547be957464fde1333, type: 3}
 --- !u!4 &285103057 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1623951340278836766, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
@@ -33096,6 +33121,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1547864421}
     m_Modifications:
+    - target: {fileID: 1623951340135953234, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1623951340278836766, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -33143,6 +33172,10 @@ PrefabInstance:
     - target: {fileID: 1623951340278836767, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: m_Name
       value: Enemy Blob (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623951340278836767, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1623951340278836833, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: area
@@ -35325,6 +35358,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1547864421}
     m_Modifications:
+    - target: {fileID: 1623951340135953234, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623951340135953239, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623951340135953239, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 337446273
+      objectReference: {fileID: 0}
     - target: {fileID: 1623951340278836766, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -35372,6 +35417,10 @@ PrefabInstance:
     - target: {fileID: 1623951340278836767, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: m_Name
       value: Enemy Blob
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623951340278836767, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1623951340278836833, guid: 9d41d0b15cbba3e4da70fc59d0daaf84, type: 3}
       propertyPath: area

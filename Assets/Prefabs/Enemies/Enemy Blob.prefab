@@ -69,8 +69,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -565746039
-  m_SortingLayer: 1
+  m_SortingLayerID: 337446273
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 4547611644144318047, guid: 617b58cfe7abab64bb3b1719c59945a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -199,6 +199,7 @@ MonoBehaviour:
   chaseSpeed: 10
   rangeToChase: 10
   waitAfterHitting: 1
+  damToDeal: 10
 --- !u!58 &1623951340278836834
 CircleCollider2D:
   m_ObjectHideFlags: 0
