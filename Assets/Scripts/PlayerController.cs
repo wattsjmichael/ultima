@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public Sprite[] playerDirectionSprites;
 
     public Joystick joystick;
+    public GameObject hitEffect;
 
     private bool isKnockingBack;
     public float kbTime,
@@ -103,6 +104,8 @@ public class PlayerController : MonoBehaviour
 
         kbDir = transform.position - kbPos;
         kbDir.Normalize();
+
+        Instantiate(hitEffect, transform.position, transform.rotation);
 
     }
 }
