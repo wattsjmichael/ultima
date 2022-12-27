@@ -35,5 +35,9 @@ public class CameraController : MonoBehaviour
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, areaBox.bounds.min.x + halfWidth, areaBox.bounds.max.x - halfWidth),
         Mathf.Clamp(transform.position.y, areaBox.bounds.min.y + halfHeight, areaBox.bounds.max.y - halfHeight),
         transform.position.z);
+
+        
+        
+
     }
 }

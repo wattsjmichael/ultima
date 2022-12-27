@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     public static PlayerController instance;
     public float moveSpeed;
 
@@ -18,6 +17,11 @@ public class PlayerController : MonoBehaviour
 
     public Joystick joystick;
 
+    private bool isKnockingBack;
+    public float kbTime,
+        kbForce;
+    private float kbCounter;
+    private Vector2 kbDir;
 
     private void Awake()
     {
@@ -35,46 +39,54 @@ public class PlayerController : MonoBehaviour
     {
         //transform.position = new Vector3(transform.position.x + (joystick.Horizontal) * moveSpeed * Time.deltaTime, transform.position.y + (joystick.Vertical) * moveSpeed * Time.deltaTime, transform.position.z);
 
-
-
-
-        rb.velocity = new Vector2(joystick.Horizontal, joystick.Vertical).normalized * moveSpeed;
-
-        anim.SetFloat("Speed", rb.velocity.magnitude);
-
-        if (rb.velocity != Vector2.zero)
+        if (!isKnockingBack)
         {
-            if (joystick.Horizontal != 0)
-            {
-                sr.sprite = playerDirectionSprites[1];
+            rb.velocity =
+                new Vector2(joystick.Horizontal, joystick.Vertical).normalized * moveSpeed;
 
-                if (joystick.Horizontal < 0)
+            anim.SetFloat("Speed", rb.velocity.magnitude);
+
+            if (rb.velocity != Vector2.zero)
+            {
+                if (joystick.Horizontal != 0)
                 {
-                    sr.flipX = true;
-                    weaponAnim.SetFloat("dirX", -1f);
-                    weaponAnim.SetFloat("dirY", 0f);
+                    sr.sprite = playerDirectionSprites[1];
+
+                    if (joystick.Horizontal < 0)
+                    {
+                        sr.flipX = true;
+                        weaponAnim.SetFloat("dirX", -1f);
+                        weaponAnim.SetFloat("dirY", 0f);
+                    }
+                    else
+                    {
+                        sr.flipX = false;
+                        weaponAnim.SetFloat("dirX", 1f);
+                        weaponAnim.SetFloat("dirY", 0f);
+                    }
                 }
                 else
                 {
-                    sr.flipX = false;
-                    weaponAnim.SetFloat("dirX", 1f);
-                    weaponAnim.SetFloat("dirY", 0f);
+                    if (joystick.Vertical < 0)
+                    {
+                        sr.sprite = playerDirectionSprites[0];
+                        weaponAnim.SetFloat("dirX", 0f);
+                        weaponAnim.SetFloat("dirY", -1f);
+                    }
+                    else
+                    {
+                        sr.sprite = playerDirectionSprites[2];
+                        weaponAnim.SetFloat("dirX", 0f);
+                        weaponAnim.SetFloat("dirY", 1f);
+                    }
                 }
             }
-            else
+        } else {
+            kbCounter -= Time.deltaTime;
+            rb.velocity = kbDir * kbForce;
+            if (kbCounter <= 0)
             {
-                if (joystick.Vertical < 0)
-                {
-                    sr.sprite = playerDirectionSprites[0];
-                    weaponAnim.SetFloat("dirX", 0f);
-                    weaponAnim.SetFloat("dirY", -1f);
-                }
-                else
-                {
-                    sr.sprite = playerDirectionSprites[2];
-                    weaponAnim.SetFloat("dirX", 0f);
-                    weaponAnim.SetFloat("dirY", 1f);
-                }
+                isKnockingBack = false;
             }
         }
     }
@@ -82,6 +94,15 @@ public class PlayerController : MonoBehaviour
     public void attackButton()
     {
         weaponAnim.SetTrigger("Attack");
-        Debug.Log("Hello");
+    }
+
+    public void KnockBack(Vector3 kbPos)
+    {
+        kbCounter = kbTime;
+        isKnockingBack = true;
+
+        kbDir = transform.position - kbPos;
+        kbDir.Normalize();
+
     }
 }
