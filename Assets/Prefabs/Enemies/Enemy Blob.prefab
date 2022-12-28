@@ -115,9 +115,10 @@ GameObject:
   - component: {fileID: 1623951340278836832}
   - component: {fileID: 1623951340278836833}
   - component: {fileID: 1623951340278836834}
+  - component: {fileID: 1608767914925806054}
   m_Layer: 0
   m_Name: Enemy Blob
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,3 +217,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.024024725}
   serializedVersion: 2
   m_Radius: 0.62012506
+--- !u!114 &1608767914925806054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623951340278836767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d92b0f9db78f94bbe06635c2a56e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currHealth: 20
+  deathEffect: {fileID: 6435730183740690088, guid: 6b0e857bc6468654483a41dbd85914ee, type: 3}
