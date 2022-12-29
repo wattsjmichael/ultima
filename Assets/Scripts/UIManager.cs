@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
     public Slider healthSlider;
     public TMP_Text healthText;
 
+     public Slider stamSlider;
+    public TMP_Text stamText;
+
     void Awake()
     {
         instance = this;
@@ -19,12 +22,13 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         UpdateHealth();
+        UpdateStamina();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateStamina();
     }
 
     public void UpdateHealth()
@@ -32,6 +36,14 @@ public class UIManager : MonoBehaviour
         healthSlider.maxValue = PlayerHealthController.instance.maxHealth;
         healthSlider.value = PlayerHealthController.instance.currHealth;
         healthText.text = "HEALTH " +  PlayerHealthController.instance.currHealth + "/" + PlayerHealthController.instance.maxHealth;
+
+    }
+
+        public void UpdateStamina()
+    {
+        stamSlider.maxValue = PlayerController.instance.totalStam;
+        stamSlider.value = PlayerController.instance.currStam;
+        stamText.text = "STAMINA " +  Mathf.RoundToInt(PlayerController.instance.currStam) + "/" + PlayerController.instance.totalStam;
 
     }
 }

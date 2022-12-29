@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     public float totalStam,
         stamRefillSpeed;
-    private float currStam;
+    public float currStam;
 
     private void Awake()
     {
@@ -45,11 +45,13 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         activeMoveSpeed = moveSpeed;
+        currStam = totalStam;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (!isKnockingBack)
         {
             rb.velocity =
@@ -93,12 +95,18 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
+            if (Input.GetMouseButtonDown(0))
+            {
+                wpnAnim.SetTrigger("Attack");
+            }
             if (dashCounter <= 0)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) && currStam >= dashStamCost)
                 {
                     activeMoveSpeed = dashSpeed;
                     dashCounter = dashLength;
+
+                    currStam -= dashStamCost;
                 }
             }
             else
@@ -109,11 +117,12 @@ public class PlayerController : MonoBehaviour
                     activeMoveSpeed = moveSpeed;
                 }
             }
-
-            if (Input.GetMouseButtonDown(0))
+            currStam += stamRefillSpeed * Time.deltaTime;
+            if (currStam > totalStam)
             {
-                wpnAnim.SetTrigger("Attack");
+                currStam = totalStam;
             }
+           
         }
         else
         {
