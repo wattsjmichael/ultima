@@ -82,7 +82,9 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-        } else {
+        }
+        else
+        {
             kbCounter -= Time.deltaTime;
             rb.velocity = kbDir * kbForce;
             if (kbCounter <= 0)
@@ -106,6 +108,5 @@ public class PlayerController : MonoBehaviour
         kbDir.Normalize();
 
         Instantiate(hitEffect, transform.position, transform.rotation);
-
     }
 }

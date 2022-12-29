@@ -23,7 +23,15 @@ public class EnemyController : MonoBehaviour
         rangeToChase,
         waitAfterHitting;
 
-        public int damToDeal = 10;
+    public int damToDeal = 10;
+
+    private bool isKnockingBack;
+    public float kbTime,
+        kbForce,
+        waitAfterKB;
+    private float kbCounter,
+        kbWaitCounter;
+    private Vector2 kbDir;
 
     // Start is called before the first frame update
     void Start()
@@ -34,70 +42,104 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isChasing)
+        if (!isKnockingBack)
         {
-            if (waitCounter > 0)
+            if (!isChasing)
             {
-                waitCounter = waitCounter - Time.deltaTime;
-                eRB.velocity = Vector2.zero;
-
-                if (waitCounter <= 0)
+                if (waitCounter > 0)
                 {
-                    moveCounter = moveCounter = Random.Range(moveTime * .75f, moveTime * 1.25f);
-                    eAnim.SetBool("moving", true);
-                    moveDir = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-                    moveDir.Normalize();
+                    waitCounter = waitCounter - Time.deltaTime;
+                    eRB.velocity = Vector2.zero;
+
+                    if (waitCounter <= 0)
+                    {
+                        moveCounter = moveCounter = Random.Range(moveTime * .75f, moveTime * 1.25f);
+                        eAnim.SetBool("moving", true);
+                        moveDir = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+                        moveDir.Normalize();
+                    }
+                }
+                else
+                {
+                    moveCounter -= Time.deltaTime;
+
+                    eRB.velocity = moveDir * moveSpeed;
+
+                    if (moveCounter <= 0)
+                    {
+                        waitCounter = Random.Range(waitTime * .75f, waitTime * 1.25f);
+                        eAnim.SetBool("moving", false);
+                    }
+                    if (shouldChase && PlayerController.instance.gameObject.activeInHierarchy)
+                    {
+                        if (
+                            Vector3.Distance(
+                                transform.position,
+                                PlayerController.instance.transform.position
+                            ) < rangeToChase
+                        )
+                        {
+                            isChasing = true;
+                        }
+                    }
                 }
             }
             else
             {
-                moveCounter -= Time.deltaTime;
-
-                eRB.velocity = moveDir * moveSpeed;
-
-                if (moveCounter <= 0)
+                if (waitCounter > 0)
                 {
-                    waitCounter = Random.Range(waitTime * .75f, waitTime * 1.25f);
-                    eAnim.SetBool("moving", false);
-                }
-                if (shouldChase && PlayerController.instance.gameObject.activeInHierarchy)
-                {
-                    if (
-                        Vector3.Distance(
-                            transform.position,
-                            PlayerController.instance.transform.position
-                        ) < rangeToChase)
+                    waitCounter -= Time.deltaTime;
+                    eRB.velocity = Vector2.zero;
+
+                    if (waitCounter <= 0)
                     {
-                        isChasing = true;
+                        eAnim.SetBool("moving", true);
                     }
+                }
+                else
+                {
+                    moveDir = PlayerController.instance.transform.position - transform.position;
+                    moveDir.Normalize();
+
+                    eRB.velocity = moveDir * chaseSpeed;
+                }
+
+                if (
+                    Vector3.Distance(
+                        transform.position,
+                        PlayerController.instance.transform.position
+                    ) > rangeToChase
+                    || !PlayerController.instance.gameObject.activeInHierarchy
+                )
+                {
+                    isChasing = false;
+                    waitCounter = waitTime;
+                    eAnim.SetBool("moving", false);
                 }
             }
         }
         else
         {
-            if (waitCounter > 0)
+            if (kbCounter > 0)
             {
-                waitCounter = Time.deltaTime;
-                eRB.velocity = Vector2.zero;
+                kbCounter -= Time.deltaTime;
 
-                if (waitCounter <= 0)
+                eRB.velocity = kbDir * kbForce;
+                Debug.Log(eRB.velocity);
+                if (kbCounter <= 0)
                 {
-                    eAnim.SetBool("moving", true);
+                    kbWaitCounter = waitAfterKB;
                 }
             }
             else
             {
-                moveDir = PlayerController.instance.transform.position - transform.position;
-                moveDir.Normalize();
+                kbWaitCounter -= Time.deltaTime;
+                eRB.velocity = Vector2.zero;
 
-                eRB.velocity = moveDir * chaseSpeed;
-            }
-
-            if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) > rangeToChase || !PlayerController.instance.gameObject.activeInHierarchy)
-            {
-                isChasing = false;
-                waitCounter = waitTime;
-                eAnim.SetBool("moving", false);
+                if(kbCounter <= 0)
+                {
+                    isKnockingBack = false;
+                }
             }
         }
 
@@ -106,6 +148,19 @@ public class EnemyController : MonoBehaviour
             Mathf.Clamp(transform.position.y, area.bounds.min.y + 1f, area.bounds.max.y - 1f),
             transform.position.z
         );
+    }
+
+    public void KnockBack(Vector3 kbPos)
+    {
+        kbCounter = kbTime;
+        isKnockingBack = true;
+
+        kbDir = transform.position - kbPos;
+        kbDir.Normalize();
+
+       
+
+       
     }
 
     private void OnCollisionEnter2D(Collision2D other)

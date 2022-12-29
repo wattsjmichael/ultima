@@ -24,15 +24,15 @@ public class AreaActivator : MonoBehaviour
     // Update is called once per framef
     void Update() { }
 
-    private void DespawnEnemies() 
+    private void DespawnEnemies()
     {
-        foreach( GameObject enemy in clonedEnemies)
+        foreach (GameObject enemy in clonedEnemies)
         {
             Destroy(enemy);
         }
 
         clonedEnemies.Clear();
-     }
+    }
 
     private void SpawnEnemies()
     {
@@ -62,7 +62,10 @@ public class AreaActivator : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            DespawnEnemies();
+            if (PlayerHealthController.instance.currHealth > 0)
+            {
+                DespawnEnemies();
+            }
         }
     }
 }

@@ -201,6 +201,9 @@ MonoBehaviour:
   rangeToChase: 10
   waitAfterHitting: 1
   damToDeal: 10
+  kbTime: 0.2
+  kbForce: 5
+  waitAfterKB: 1
 --- !u!58 &1623951340278836834
 CircleCollider2D:
   m_ObjectHideFlags: 0
