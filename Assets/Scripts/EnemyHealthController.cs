@@ -10,6 +10,9 @@ public class EnemyHealthController : MonoBehaviour
 
     private EnemyController eEC;
 
+    public GameObject healthToDrop;
+    public float healthDropChance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,11 @@ public class EnemyHealthController : MonoBehaviour
 
             }
             Destroy(gameObject);
+
+            if (Random.Range(0f, 100f) < healthDropChance && healthToDrop != null)
+            {
+                Instantiate(healthToDrop, transform.position, transform.rotation);
+            }
         }
         eEC.KnockBack(PlayerController.instance.transform.position);
     }

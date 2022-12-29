@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerControllerMobile : MonoBehaviour
 {
-    public static PlayerController instance;
+    public static PlayerControllerMobile instance;
     public float moveSpeed;
 
     public Rigidbody2D rb;
 
     private Animator anim;
-    public Animator wpnAnim;
+    public Animator weaponAnim;
 
     public SpriteRenderer sr;
     public Sprite[] playerDirectionSprites;
 
+    public Joystick joystick;
     public GameObject hitEffect;
+
+    public Button dash;
 
     public float dashSpeed,
         dashLength,
-        dashStamCost;
+         dashStamCost;
     private float dashCounter,
         activeMoveSpeed;
+       
 
     private bool isKnockingBack;
     public float kbTime,
@@ -44,75 +48,56 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        dash = GetComponent<Button>();
         activeMoveSpeed = moveSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //transform.position = new Vector3(transform.position.x + (joystick.Horizontal) * moveSpeed * Time.deltaTime, transform.position.y + (joystick.Vertical) * moveSpeed * Time.deltaTime, transform.position.z);
+
         if (!isKnockingBack)
         {
             rb.velocity =
-                new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized
-                * activeMoveSpeed;
+                new Vector2(joystick.Horizontal, joystick.Vertical).normalized * activeMoveSpeed;
 
             anim.SetFloat("Speed", rb.velocity.magnitude);
 
             if (rb.velocity != Vector2.zero)
             {
-                if (Input.GetAxisRaw("Horizontal") != 0)
+                if (joystick.Horizontal != 0)
                 {
                     sr.sprite = playerDirectionSprites[1];
 
-                    if (Input.GetAxisRaw("Horizontal") < 0)
+                    if (joystick.Horizontal < 0)
                     {
                         sr.flipX = true;
-                        wpnAnim.SetFloat("dirX", -1f);
-                        wpnAnim.SetFloat("dirY", 0f);
+                        weaponAnim.SetFloat("dirX", -1f);
+                        weaponAnim.SetFloat("dirY", 0f);
                     }
                     else
                     {
                         sr.flipX = false;
-                        wpnAnim.SetFloat("dirX", 1f);
-                        wpnAnim.SetFloat("dirY", 0f);
+                        weaponAnim.SetFloat("dirX", 1f);
+                        weaponAnim.SetFloat("dirY", 0f);
                     }
                 }
                 else
                 {
-                    if (Input.GetAxisRaw("Vertical") < 0)
+                    if (joystick.Vertical < 0)
                     {
                         sr.sprite = playerDirectionSprites[0];
-                        wpnAnim.SetFloat("dirX", 0f);
-                        wpnAnim.SetFloat("dirY", -1f);
+                        weaponAnim.SetFloat("dirX", 0f);
+                        weaponAnim.SetFloat("dirY", -1f);
                     }
                     else
                     {
                         sr.sprite = playerDirectionSprites[2];
-                        wpnAnim.SetFloat("dirX", 0f);
-                        wpnAnim.SetFloat("dirY", 1f);
+                        weaponAnim.SetFloat("dirX", 0f);
+                        weaponAnim.SetFloat("dirY", 1f);
                     }
                 }
-            }
-            if (dashCounter <= 0)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    activeMoveSpeed = dashSpeed;
-                    dashCounter = dashLength;
-                }
-            }
-            else
-            {
-                dashCounter -= Time.deltaTime;
-                if (dashCounter <= 0)
-                {
-                    activeMoveSpeed = moveSpeed;
-                }
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                wpnAnim.SetTrigger("Attack");
             }
         }
         else
@@ -124,6 +109,45 @@ public class PlayerController : MonoBehaviour
                 isKnockingBack = false;
             }
         }
+        Debug.Log(currStam);
+        currStam += stamRefillSpeed * Time.deltaTime;
+        if (currStam > totalStam)
+        {
+            currStam = totalStam;
+        }
+    }
+
+    public void dashButton()
+    {
+        if (currStam >= dashStamCost)
+        {
+            if (dashCounter <= 0)
+            {
+                activeMoveSpeed = dashSpeed;
+                dashCounter = dashLength;
+
+                currStam -= dashStamCost;
+            }
+            else
+            {
+                dashCounter -= Time.deltaTime;
+
+                if (dashCounter <= 0)
+                {
+                    activeMoveSpeed = moveSpeed;
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Outta Stam!");
+           
+        }
+    }
+
+    public void attackButton()
+    {
+        weaponAnim.SetTrigger("Attack");
     }
 
     public void KnockBack(Vector3 kbPos)

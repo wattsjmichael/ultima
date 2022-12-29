@@ -5,10 +5,15 @@ using UnityEngine;
 public class HealthPickup : MonoBehaviour
 {
     public int healthToRestore;
+
+    public float lifetime;
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (lifetime > 0)
+        {
+        Destroy(gameObject, lifetime);
+        }
     }
 
     // Update is called once per frame

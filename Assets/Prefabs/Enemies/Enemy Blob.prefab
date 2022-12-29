@@ -234,3 +234,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currHealth: 20
   deathEffect: {fileID: 6435730183740690088, guid: 6b0e857bc6468654483a41dbd85914ee, type: 3}
+  healthToDrop: {fileID: 912623179243918922, guid: 4612f1f9bd158044fa1c9b9b3aa4eb11, type: 3}
+  healthDropChance: 25
