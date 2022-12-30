@@ -32,7 +32,16 @@ public class PlayerController : MonoBehaviour
 
     public float totalStam,
         stamRefillSpeed;
+
+    [HideInInspector]
     public float currStam;
+
+    public bool isSpinning;
+    public float spinCost,
+        spinCooldown;
+    private float spinCounter;
+
+    public bool canMove;
 
     private void Awake()
     {
@@ -51,86 +60,113 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (!isKnockingBack)
+        if (canMove)
         {
-            rb.velocity =
-                new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized
-                * activeMoveSpeed;
-
-            anim.SetFloat("Speed", rb.velocity.magnitude);
-
-            if (rb.velocity != Vector2.zero)
+            if (!isKnockingBack)
             {
-                if (Input.GetAxisRaw("Horizontal") != 0)
-                {
-                    sr.sprite = playerDirectionSprites[1];
+                rb.velocity =
+                    new Vector2(
+                        Input.GetAxisRaw("Horizontal"),
+                        Input.GetAxisRaw("Vertical")
+                    ).normalized * activeMoveSpeed;
 
-                    if (Input.GetAxisRaw("Horizontal") < 0)
+                anim.SetFloat("Speed", rb.velocity.magnitude);
+
+                if (rb.velocity != Vector2.zero)
+                {
+                    if (Input.GetAxisRaw("Horizontal") != 0)
                     {
-                        sr.flipX = true;
-                        wpnAnim.SetFloat("dirX", -1f);
-                        wpnAnim.SetFloat("dirY", 0f);
+                        sr.sprite = playerDirectionSprites[1];
+
+                        if (Input.GetAxisRaw("Horizontal") < 0)
+                        {
+                            sr.flipX = true;
+                            wpnAnim.SetFloat("dirX", -1f);
+                            wpnAnim.SetFloat("dirY", 0f);
+                        }
+                        else
+                        {
+                            sr.flipX = false;
+                            wpnAnim.SetFloat("dirX", 1f);
+                            wpnAnim.SetFloat("dirY", 0f);
+                        }
                     }
                     else
                     {
-                        sr.flipX = false;
-                        wpnAnim.SetFloat("dirX", 1f);
-                        wpnAnim.SetFloat("dirY", 0f);
+                        if (Input.GetAxisRaw("Vertical") < 0)
+                        {
+                            sr.sprite = playerDirectionSprites[0];
+                            wpnAnim.SetFloat("dirX", 0f);
+                            wpnAnim.SetFloat("dirY", -1f);
+                        }
+                        else
+                        {
+                            sr.sprite = playerDirectionSprites[2];
+                            wpnAnim.SetFloat("dirX", 0f);
+                            wpnAnim.SetFloat("dirY", 1f);
+                        }
+                    }
+                }
+                if (Input.GetMouseButtonDown(0) && !isSpinning)
+                {
+                    wpnAnim.SetTrigger("Attack");
+                    AudioManager.instance.PlayerSFX(0);
+                }
+                if (dashCounter <= 0)
+                {
+                    if (Input.GetKeyDown(KeyCode.Space) && currStam >= dashStamCost)
+                    {
+                        activeMoveSpeed = dashSpeed;
+                        dashCounter = dashLength;
+
+                        currStam -= dashStamCost;
                     }
                 }
                 else
                 {
-                    if (Input.GetAxisRaw("Vertical") < 0)
+                    dashCounter -= Time.deltaTime;
+                    if (dashCounter <= 0)
                     {
-                        sr.sprite = playerDirectionSprites[0];
-                        wpnAnim.SetFloat("dirX", 0f);
-                        wpnAnim.SetFloat("dirY", -1f);
-                    }
-                    else
-                    {
-                        sr.sprite = playerDirectionSprites[2];
-                        wpnAnim.SetFloat("dirX", 0f);
-                        wpnAnim.SetFloat("dirY", 1f);
+                        activeMoveSpeed = moveSpeed;
                     }
                 }
-            }
-            if (Input.GetMouseButtonDown(0))
-            {
-                wpnAnim.SetTrigger("Attack");
-            }
-            if (dashCounter <= 0)
-            {
-                if (Input.GetKeyDown(KeyCode.Space) && currStam >= dashStamCost)
-                {
-                    activeMoveSpeed = dashSpeed;
-                    dashCounter = dashLength;
 
-                    currStam -= dashStamCost;
+                if (spinCounter <= 0)
+                {
+                    if (Input.GetMouseButtonDown(1) && currStam >= spinCost)
+                    {
+                        wpnAnim.SetTrigger("SpinAttack");
+                        currStam -= spinCost;
+
+                        spinCounter = spinCooldown;
+                        isSpinning = true;
+
+                        AudioManager.instance.PlayerSFX(0);
+                    }
+                }
+                else
+                {
+                    spinCounter -= Time.deltaTime;
+                    if (spinCounter <= 0)
+                    {
+                        isSpinning = false;
+                    }
+                }
+
+                currStam += stamRefillSpeed * Time.deltaTime;
+                if (currStam > totalStam)
+                {
+                    currStam = totalStam;
                 }
             }
             else
             {
-                dashCounter -= Time.deltaTime;
-                if (dashCounter <= 0)
+                kbCounter -= Time.deltaTime;
+                rb.velocity = kbDir * kbForce;
+                if (kbCounter <= 0)
                 {
-                    activeMoveSpeed = moveSpeed;
+                    isKnockingBack = false;
                 }
-            }
-            currStam += stamRefillSpeed * Time.deltaTime;
-            if (currStam > totalStam)
-            {
-                currStam = totalStam;
-            }
-           
-        }
-        else
-        {
-            kbCounter -= Time.deltaTime;
-            rb.velocity = kbDir * kbForce;
-            if (kbCounter <= 0)
-            {
-                isKnockingBack = false;
             }
         }
     }

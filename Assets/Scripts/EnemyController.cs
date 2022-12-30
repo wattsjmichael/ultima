@@ -125,7 +125,6 @@ public class EnemyController : MonoBehaviour
                 kbCounter -= Time.deltaTime;
 
                 eRB.velocity = kbDir * kbForce;
-                Debug.Log(eRB.velocity);
                 if (kbCounter <= 0)
                 {
                     kbWaitCounter = waitAfterKB;
