@@ -45,7 +45,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Start is called before the first frame update
@@ -60,7 +68,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canMove)
+        if (canMove && !DialogManager.instance.dialogBox.activeInHierarchy)
         {
             if (!isKnockingBack)
             {
@@ -168,6 +176,11 @@ public class PlayerController : MonoBehaviour
                     isKnockingBack = false;
                 }
             }
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+            anim.SetFloat("Speed", 0f);
         }
     }
 

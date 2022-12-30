@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance;
 
     public int currCoins;
 
-   private void Awake()
+    private void Awake()
     {
-        instance = this;
-    
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Start() { }
 
     // Update is called once per frame
     void Update()
@@ -29,10 +33,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void GetCoins(int coinsToAdd)
     {
-        
         currCoins += coinsToAdd;
 
         UIManager.instance.UpdateCoins();
@@ -49,9 +51,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-             UIManager.instance.pauseScreen.SetActive(false);
-             Time.timeScale = 1f;
-              PlayerController.instance.canMove = true;
+            UIManager.instance.pauseScreen.SetActive(false);
+            Time.timeScale = 1f;
+            PlayerController.instance.canMove = true;
         }
     }
 }
