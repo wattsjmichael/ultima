@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public int currCoins;
 
+    public bool dialogActive;
+
     private void Awake()
     {
         if (instance == null)

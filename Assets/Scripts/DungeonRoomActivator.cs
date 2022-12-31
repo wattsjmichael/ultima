@@ -14,6 +14,14 @@ public class DungeonRoomActivator : MonoBehaviour
     private bool doorsLocked,
         dontSpawnEnemies;
 
+    public bool isBossRoom;
+    public Transform bossCamLower,
+        bossCamUpper;
+
+    public GameObject theBoss;
+
+    private bool dontReactivateBoss;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +76,23 @@ public class DungeonRoomActivator : MonoBehaviour
                     door.SetActive(true);
                 }
                 doorsLocked = true;
+            }
+            if (isBossRoom)
+            {
+                DungeonCameraController.instance.ActivateBossRoom(
+                    bossCamUpper.position,
+                    bossCamLower.position
+                );
+
+                if (!dontReactivateBoss)
+                {
+                    theBoss.SetActive(true);
+                    dontReactivateBoss = true;
+                }
+                else
+                {
+                    DungeonCameraController.instance.inBossRoom = false;
+                }
             }
         }
     }
