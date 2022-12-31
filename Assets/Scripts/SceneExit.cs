@@ -19,6 +19,10 @@ public class SceneExit : MonoBehaviour
         if (other.tag == "Player")
         {
             PlayerController.instance.transform.position = exitLocation;
+            PlayerController.instance.rb.velocity = Vector2.zero;
+            PlayerController.instance.canMove = false;
+
+            UIManager.instance.blackoutScreen.SetActive(true);
             SceneManager.LoadScene(sceneToLoad);
         }
     }

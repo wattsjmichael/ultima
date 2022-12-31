@@ -22,11 +22,22 @@ public class DamageEnemy : MonoBehaviour
             {
                 other.GetComponent<EnemyHealthController>().TakeDam(damToDeal * 4);
 
-                Instantiate(hitEffect, transform.position, transform.rotation);
+               SpawnHitEffect();
             }
             other.GetComponent<EnemyHealthController>().TakeDam(damToDeal);
-
-            Instantiate(hitEffect, transform.position, transform.rotation);
+            SpawnHitEffect();
         }
+
+        if(other.tag == "Breakable")
+        {
+            other.GetComponent<BreakableObject>().Break();
+            SpawnHitEffect();
+
+        }
+    }
+
+    void SpawnHitEffect()
+    {
+         Instantiate(hitEffect, transform.position, transform.rotation);
     }
 }

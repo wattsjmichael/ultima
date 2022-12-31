@@ -33,10 +33,17 @@ public class EnemyController : MonoBehaviour
         kbWaitCounter;
     private Vector2 kbDir;
 
+    public bool shouldShoot;
+    public GameObject bullet;
+    public float timeBetweenShots;
+    private float shotCounter;
+    public Transform shotPoint;
+
     // Start is called before the first frame update
     void Start()
     {
         waitCounter = Random.Range(waitTime * .75f, waitTime * 1.25f);
+        shotCounter = timeBetweenShots;
     }
 
     // Update is called once per frame
@@ -81,6 +88,16 @@ public class EnemyController : MonoBehaviour
                         {
                             isChasing = true;
                         }
+                    }
+                }
+
+                if(shouldShoot)
+                {
+                    shotCounter -= Time.deltaTime;
+                    if (shotCounter <= 0 )
+                    {
+                        shotCounter = timeBetweenShots;
+                        Instantiate(bullet, shotPoint.position, shotPoint.rotation);
                     }
                 }
             }

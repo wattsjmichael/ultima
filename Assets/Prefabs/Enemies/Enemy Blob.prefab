@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1623951340135953237}
   - component: {fileID: 1623951340135953239}
   - component: {fileID: 1623951340135953236}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,13 +116,13 @@ GameObject:
   - component: {fileID: 1623951340278836833}
   - component: {fileID: 1623951340278836834}
   - component: {fileID: 1608767914925806054}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy Blob
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1623951340278836766
 Transform:
   m_ObjectHideFlags: 0
@@ -204,6 +204,10 @@ MonoBehaviour:
   kbTime: 0.2
   kbForce: 5
   waitAfterKB: 1
+  shouldShoot: 0
+  bullet: {fileID: 0}
+  timeBetweenShots: 0
+  shotPoint: {fileID: 0}
 --- !u!58 &1623951340278836834
 CircleCollider2D:
   m_ObjectHideFlags: 0

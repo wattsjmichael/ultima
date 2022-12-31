@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
 
     public string mainMenuScene;
 
+    public GameObject blackoutScreen;
+    
+
     void Awake()
     {
         instance = this;

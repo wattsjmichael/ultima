@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
     public float moveSpeed;
-
+    [HideInInspector]
     public Rigidbody2D rb;
 
     private Animator anim;
@@ -193,5 +193,10 @@ public class PlayerController : MonoBehaviour
         kbDir.Normalize();
 
         Instantiate(hitEffect, transform.position, transform.rotation);
+    }
+
+    public void DoAtLevelStart()
+    {
+        canMove = true;
     }
 }
