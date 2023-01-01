@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
     public float moveSpeed;
+
     [HideInInspector]
     public Rigidbody2D rb;
 
@@ -42,6 +43,11 @@ public class PlayerController : MonoBehaviour
     private float spinCounter;
 
     public bool canMove;
+
+    public SpriteRenderer swordSR;
+    public Sprite[] allWpns;
+    public DamageEnemy swordDMG;
+    public int currentSword;
 
     private void Awake()
     {
@@ -198,5 +204,12 @@ public class PlayerController : MonoBehaviour
     public void DoAtLevelStart()
     {
         canMove = true;
+    }
+
+    public void UpgradeSword(int newDmg, int newSwordRef)
+    {
+        swordDMG.damToDeal = newDmg;
+        currentSword = newSwordRef;
+        swordSR.sprite = allWpns[newSwordRef];
     }
 }

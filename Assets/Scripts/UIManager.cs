@@ -19,10 +19,13 @@ public class UIManager : MonoBehaviour
 
     public TMP_Text coinText;
 
+    public Slider bossSlider;
+    public TMP_Text bossText;
+
     public string mainMenuScene;
 
     public GameObject blackoutScreen;
-    
+
 
     void Awake()
     {
@@ -41,6 +44,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateStamina();
+       
     }
 
     public void UpdateHealth()
@@ -64,6 +68,9 @@ public class UIManager : MonoBehaviour
             + "/"
             + PlayerController.instance.totalStam;
     }
+
+    
+
 
     public void UpdateCoins()
     {

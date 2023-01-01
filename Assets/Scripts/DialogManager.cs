@@ -50,14 +50,14 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    public void ShowDialog(string[] newLines)
+    public void ShowDialog(string[] newLines, bool shouldWaitForNextClick)
     {
         dialogLines = newLines;
         currentLine = 0;
         dialogText.text = dialogLines[currentLine];
         dialogBox.SetActive(true);
 
-        justStarted = true;
+        justStarted =  shouldWaitForNextClick;
         GameManager.instance.dialogActive = true;
     }
 }
