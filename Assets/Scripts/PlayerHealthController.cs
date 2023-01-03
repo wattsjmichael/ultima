@@ -24,6 +24,7 @@ public class PlayerHealthController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = SaveManager.instance.activeSave.maxHealth;
         currHealth = maxHealth;
 
         UIManager.instance.UpdateHealth();
@@ -52,6 +53,8 @@ public class PlayerHealthController : MonoBehaviour
                 gameObject.SetActive(false);
                 Instantiate(deathEffect, transform.position, transform.rotation);
                 AudioManager.instance.PlayerSFX(4);
+
+                GameManager.instance.Respawn();
             }
             UIManager.instance.UpdateHealth();
             AudioManager.instance.PlayerSFX(7);

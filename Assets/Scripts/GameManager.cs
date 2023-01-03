@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class GameManager : MonoBehaviour
     public int currCoins;
 
     public bool dialogActive;
+
+    public float waitForDeathScreen = 1f,
+        waitToRespawn = 2f;
 
     private void Awake()
     {
@@ -24,7 +28,10 @@ public class GameManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start() { }
+    void Start()
+    {
+        currCoins = SaveManager.instance.activeSave.currCoins;
+    }
 
     // Update is called once per frame
     void Update()
@@ -40,6 +47,7 @@ public class GameManager : MonoBehaviour
         currCoins += coinsToAdd;
 
         UIManager.instance.UpdateCoins();
+        SaveManager.instance.activeSave.currCoins = currCoins;
     }
 
     public void PauseUnpause()
@@ -57,5 +65,23 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1f;
             PlayerController.instance.canMove = true;
         }
+    }
+
+    public void Respawn()
+    {
+        StartCoroutine(RespawnCo());
+    }
+
+    public IEnumerator RespawnCo()
+    {
+        yield return new WaitForSeconds(waitForDeathScreen);
+
+        UIManager.instance.deathScreen.SetActive(true);
+        yield return new WaitForSeconds(waitToRespawn);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        UIManager.instance.blackoutScreen.SetActive(true);
+
+        PlayerController.instance.ResetOnRespawn();
     }
 }

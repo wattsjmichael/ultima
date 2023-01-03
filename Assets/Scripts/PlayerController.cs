@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
     public DamageEnemy swordDMG;
     public int currentSword;
 
+    private Vector3 respawnPos;
+
     private void Awake()
     {
         if (instance == null)
@@ -65,6 +67,12 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = SaveManager.instance.activeSave.sceneStartPos;
+        currentSword = SaveManager.instance.activeSave.currentSword;
+        swordSR.sprite = allWpns[currentSword];
+        swordDMG.damToDeal = SaveManager.instance.activeSave.swordDamage;
+
+        totalStam = SaveManager.instance.activeSave.maxStamina;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         activeMoveSpeed = moveSpeed;
@@ -204,6 +212,7 @@ public class PlayerController : MonoBehaviour
     public void DoAtLevelStart()
     {
         canMove = true;
+        respawnPos = transform.position;
     }
 
     public void UpgradeSword(int newDmg, int newSwordRef)
@@ -211,5 +220,19 @@ public class PlayerController : MonoBehaviour
         swordDMG.damToDeal = newDmg;
         currentSword = newSwordRef;
         swordSR.sprite = allWpns[newSwordRef];
+
+
+        SaveManager.instance.activeSave.currentSword = currentSword;
+        SaveManager.instance.activeSave.swordDamage = newDmg;
+    }
+
+    public void ResetOnRespawn()
+    {
+        transform.position = respawnPos;
+        canMove = false;
+        gameObject.SetActive(true);
+        currStam = totalStam;
+        kbCounter = 0;
+        PlayerHealthController.instance.currHealth = PlayerHealthController.instance.maxHealth;
     }
 }

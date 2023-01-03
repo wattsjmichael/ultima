@@ -26,6 +26,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject blackoutScreen;
 
+    public GameObject deathScreen;
+
 
     void Awake()
     {
@@ -100,4 +102,6 @@ public class UIManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+
 }

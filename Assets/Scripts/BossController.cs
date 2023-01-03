@@ -34,28 +34,36 @@ public class BossController : MonoBehaviour
     private float shotCounter,
         shootingCounter;
 
-        public AudioSource levelBGM, bossBGM;
+    public AudioSource levelBGM,
+        bossBGM;
 
-        public GameObject victoryObject;
+    public GameObject victoryObject;
 
-
+    public string progressToMark;
 
     // Start is called before the first frame update
     void Start()
     {
-        door.SetActive(true);
+        if (SaveManager.instance.CheckProgress(progressToMark))
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            door.SetActive(true);
 
-        spawnCounter = firstSpawnDelay;
-        UIManager.instance.bossSlider.maxValue = bossHealth;
-        UIManager.instance.bossSlider.value = bossHealth;
-        UIManager.instance.bossSlider.gameObject.SetActive(true);
+            spawnCounter = firstSpawnDelay;
+            UIManager.instance.bossSlider.maxValue = bossHealth;
+            UIManager.instance.bossSlider.value = bossHealth;
+            UIManager.instance.bossSlider.gameObject.SetActive(true);
 
-        UIManager.instance.bossText.text = bossName;
-        Debug.Log(bossName);
-        UIManager.instance.bossText.gameObject.SetActive(true);
+            UIManager.instance.bossText.text = bossName;
+            Debug.Log(bossName);
+            UIManager.instance.bossText.gameObject.SetActive(true);
 
-        levelBGM.Stop();
-        bossBGM.Play();
+            levelBGM.Stop();
+            bossBGM.Play();
+        }
     }
 
     // Update is called once per frame
@@ -166,6 +174,8 @@ public class BossController : MonoBehaviour
             bossBGM.Stop();
 
             victoryObject.SetActive(true);
+
+            SaveManager.instance.MarkProgress(progressToMark);
         }
         UIManager.instance.bossSlider.value = bossHealth;
     }
